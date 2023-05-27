@@ -53,5 +53,45 @@ class FloydWarshallTest {
         }
     }
 
+    @Test
+    public void testShortestPath() {
+        int[][] distancias = {
+                {0, 10, 15},
+                {10, 0, 20},
+                {15, 20, 0}
+        };
+        String[][] recorridos = {
+                {"A", "B", "C"},
+                {"A", "B", "C"},
+                {"A", "B", "C"}
+        };
+        FloydWarshall floydWarshall = new FloydWarshall(distancias, recorridos, 3);
+
+        // Prueba de ruta más corta existente
+        String shortestPath = floydWarshall.shortestPath("A", "C");
+        assertEquals("A -> C", shortestPath);
+
+        // Prueba de ruta más corta inexistente
+        String nonexistentPath = floydWarshall.shortestPath("B", "A");
+        assertEquals("B -> A", nonexistentPath);
+    }
+
+    @Test
+    public void testFindCenter() {
+        int[][] distancias = {
+                {0, 10, 15},
+                {10, 0, 20},
+                {15, 20, 0}
+        };
+        String[][] recorridos = {
+                {"A", "B", "C"},
+                {"A", "B", "C"},
+                {"A", "B", "C"}
+        };
+        FloydWarshall floydWarshall = new FloydWarshall(distancias, recorridos, 3);
+
+        String center = floydWarshall.findCenter();
+        assertEquals("A", center);
+    }
 
 }
