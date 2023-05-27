@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 /**
  * Esta clase se encarga de leer y procesar el archivo de texto 'logistica.txt' para crear un grafo.
+ * También proporciona métodos para modificar el grafo y para comprobar si una ciudad existe en el grafo.
  * @author diego leiva, pablo orellana
  */
 public class CityReader {
@@ -49,8 +50,6 @@ public class CityReader {
         }
     }
 
-
-
     /**
      * Establece una conexion entre 2 ciudades con un tiempo de viaje para clima normal
      * @param city1
@@ -63,8 +62,40 @@ public class CityReader {
         matrix[index1][index2] = normalTime;
         matrix[index2][index1] = normalTime;
     }
-    
 
+    /**
+     * Comprueba si una ciudad existe en el grafo o no
+     * @param city la ciudad a buscar
+     * @return verdadero si existe, falso si no existe
+     */
+    public boolean cityExists(String city) {
+        return cityIndex.containsKey(city);
+    }
+
+    /**
+     * Interrumpe el "trafico" entre dos ciudades
+     * @param city1 la ciudad de salida
+     * @param city2 la ciudad de llegada
+     */
+    public void interruptTraffic(String city1, String city2) {
+        int index1 = cityIndex.get(city1);
+        int index2 = cityIndex.get(city2);
+        matrix[index1][index2] = Integer.MAX_VALUE;
+        matrix[index2][index1] = Integer.MAX_VALUE;
+    }
+
+    /**
+     * Modifica el tiempo de viaje entre 2 ciudades dependiendo del clima
+     * @param city1
+     * @param city2
+     * @param newTime
+     */
+    public void changeWeather(String city1, String city2, int newTime) {
+        int index1 = cityIndex.get(city1);
+        int index2 = cityIndex.get(city2);
+        matrix[index1][index2] = newTime;
+        matrix[index2][index1] = newTime;
+    }
     // Getters y setters
 
     /**
