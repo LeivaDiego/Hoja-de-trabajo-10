@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Esta clase implementa el algoritmo de Floyd Warshall para calcular las distancias más cortas
  * entre todas las parejas de ciudades en el grafo.
@@ -13,7 +15,14 @@ public class FloydWarshall {
     private String[][] recorridos;
     private String[] vertices;
     private int SIZE;
+    private static final int INF = Integer.MAX_VALUE;
 
+    /**
+     * Constructor
+     * @param _distancias
+     * @param _recorridos
+     * @param matriz_size
+     */
     public FloydWarshall(int [][]_distancias, String[][] _recorridos, int matriz_size) {
         SIZE = matriz_size;
         distancias = _distancias;
@@ -23,6 +32,8 @@ public class FloydWarshall {
             vertices[i] = _recorridos[0][i];
         }
     }
+
+
 
     /**
      * @return the distancias
@@ -66,6 +77,9 @@ public class FloydWarshall {
         SIZE = sIZE;
     }
 
+    /**
+     * Implementacion del algoritmo de Floyd Warshall
+     */
     public void CalcularRutas() {
         for (int i = 0; i < SIZE; i++) { //Que fila y que columna trabajo
             for (int j = 0; j < SIZE; j++) {
@@ -82,5 +96,55 @@ public class FloydWarshall {
                 }
             }
         }
+    }
+
+    /**
+     * Encuentra el centro del grafo
+     * @return
+     */
+    public String findCenter() {
+        int minSum = Integer.MAX_VALUE;
+        String center = null;
+
+        for (int i = 0; i < SIZE; i++) {
+            int sum = 0;
+            for (int j = 0; j < SIZE; j++) {
+                sum += distancias[i][j];
+            }
+            if (sum < minSum) {
+                minSum = sum;
+                center = vertices[i];
+            }
+        }
+
+        return center;
+    }
+
+
+    /**
+     * Obtiene la ruta mas corta entre 2 ciudades
+     * @param start
+     * @param end
+     * @return
+     */
+    public String shortestPath(String start, String end) {
+        int startIndex = Arrays.asList(vertices).indexOf(start);
+        int endIndex = Arrays.asList(vertices).indexOf(end);
+
+        if (distancias[startIndex][endIndex] == INF) {
+            return "No existe una ruta entre las ciudades.";
+        }
+
+        String path = start;
+        String intermediate = recorridos[startIndex][endIndex];
+
+        while (!intermediate.equals(end)) {
+            path += " -> " + intermediate;
+            intermediate = recorridos[Arrays.asList(vertices).indexOf(intermediate)][endIndex];
+        }
+
+        path += " -> " + end;
+
+        return path;
     }
 }
